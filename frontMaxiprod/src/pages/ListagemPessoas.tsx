@@ -3,8 +3,16 @@ import { Pessoa } from '../types';
 import { deletePessoa, getPessoas } from '../services/pessoaService';
 import { CadastroPessoa } from './CadastroPessoa';
 
+interface Props {
+  onSucesso: () => void;
+}
+
 export const ListagemPessoas = () => {
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
+  
+  const totalGeralReceitas = pessoas.reduce((acc, p) => acc + p.totalReceitas, 0);
+  const totalGeralDespesas = pessoas.reduce((acc, p) => acc + p.totalDespesas, 0);
+  const saldoGeral = totalGeralReceitas - totalGeralDespesas;
 
   
   const carregarPessoas = async () => {
@@ -13,7 +21,7 @@ export const ListagemPessoas = () => {
       setPessoas(dados);
     } catch (error) {
       console.error("Erro ao buscar pessoas:", error);
-      alert("Erro ao conectar com a API. Verifique se o Backend está rodando e o CORS liberado.");
+      alert("Erro ao conectar com a API.");
     }
   };
 
@@ -42,7 +50,7 @@ export const ListagemPessoas = () => {
       
       <table border={1} style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
         <thead>
-          <tr style={{ backgroundColor: '#EAEBED', color: 'black' }}>
+          <tr style={{ backgroundColor: '#eaebed', color: 'black' }}>
             <th>Nome</th>
             <th>Idade</th>
             <th>Total Receitas</th>
@@ -70,6 +78,14 @@ export const ListagemPessoas = () => {
             </tr>
           ))}
         </tbody>
+        <tfoot>
+        <tr style={{ color: 'black', backgroundColor: '#eaebed', fontWeight: 'bold' }}>
+          <td colSpan={2}>TOTAL GERAL</td>
+          <td style={{ color: 'green' }}>{totalGeralReceitas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+          <td style={{ color: 'red' }}>{totalGeralDespesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+          <td style={{ color: 'blue' , borderTop: '2px solid black' }}>{saldoGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+        </tr>
+        </tfoot>
       </table>
     </div>
   );

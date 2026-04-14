@@ -2,6 +2,6 @@ namespace maxiprod.Enums;
 
 public enum TipoTransacao
 {
-    Despesa = 1,
-    Receita = 2,
+    Receita = 1,
+    Despesa = 2,
 }

@@ -2,7 +2,7 @@ namespace maxiprod.Enums;
 
 public enum FinalidadeCategoria
 {
-    Despesa = 1,
-    Receita = 2,
+    Receita = 1,
+    Despesa = 2,
     Ambas = 3
 }
