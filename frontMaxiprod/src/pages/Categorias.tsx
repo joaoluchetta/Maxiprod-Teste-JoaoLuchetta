@@ -23,8 +23,9 @@ export const Categorias = () => {
 
         try {
             await createCategoria(descricao, finalidade);
-            setDescricao('');
-            carregarCategorias();
+            // setDescricao('');
+            // carregarCategorias();
+            window.location.reload()
             alert("Categoria criada!");
         } catch (error) {
             alert("Erro ao criar categoria.");
@@ -33,7 +34,7 @@ export const Categorias = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <h1>Cadastro de Categorias</h1>
+            <h2>Cadastro de Categorias</h2>
 
             <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
                 <input

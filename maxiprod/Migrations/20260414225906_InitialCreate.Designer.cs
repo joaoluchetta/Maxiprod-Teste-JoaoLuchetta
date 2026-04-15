@@ -11,8 +11,8 @@ using maxiprod.Data;
 namespace maxiprod.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260413040423_Initial")]
-    partial class Initial
+    [Migration("20260414225906_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

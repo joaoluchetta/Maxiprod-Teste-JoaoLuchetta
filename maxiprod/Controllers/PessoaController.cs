@@ -66,4 +66,26 @@ public class PessoaController : ControllerBase
 
         return NoContent();
     }
+    
+    // PUT: api/Pessoas/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutPessoa(Guid id, PessoaRequestDto dto)
+    {
+        var pessoa = await _context.Pessoas.FindAsync(id);
+        if (pessoa == null) return NotFound();
+        
+        pessoa.Nome = dto.Nome;
+        pessoa.Idade = dto.Idade;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return BadRequest("Erro ao atualizar os dados no banco.");
+        }
+
+        return NoContent();
+    }
 }

@@ -1,14 +1,25 @@
-import { useState } from 'react';
-import { createPessoa } from '../services/pessoaService';
-
+import { useState, useEffect } from 'react';
+import { createPessoa, updatePessoa } from '../services/pessoaService';
+import { Pessoa } from '../types';
 interface Props {
-    onSucesso: () => void; // Função para atualizar a lista após cadastrar
+    onSucesso: () => void;
+    pessoaParaEditar?: Pessoa | null;
 }
 
-export const CadastroPessoa = ({ onSucesso }: Props) => {
+export const CadastroPessoa = ({ onSucesso, pessoaParaEditar }: Props) => {
     const [nome, setNome] = useState('');
     const [idade, setIdade] = useState<number | ''>('');
 
+    useEffect(() => {
+        if (pessoaParaEditar) {
+            setNome(pessoaParaEditar.nome);
+            setIdade(pessoaParaEditar.idade);
+        } else {
+            setNome('');
+            setIdade('');
+        }
+    }, [pessoaParaEditar]);
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -18,20 +29,28 @@ export const CadastroPessoa = ({ onSucesso }: Props) => {
         }
 
         try {
+            if (pessoaParaEditar) {
+                await updatePessoa(pessoaParaEditar.id, nome, Number(idade));
+                // setIdade('');
+                // onSucesso();
+                window.location.reload()
+                alert("Pessoa atualizada!");
+                return;
+            }
             await createPessoa(nome, Number(idade));
-            setNome('');
-            setIdade('');
-            onSucesso(); // Recarrega a tabela de pessoas
+            // setNome('');
+            // setIdade('');
+            // onSucesso();
+            window.location.reload()
             alert("Pessoa cadastrada com sucesso!");
         } catch (error) {
-            console.error("Erro ao cadastrar:", error);
-            alert("Erro ao cadastrar pessoa. Verifique o console.");
+            alert("Erro ao cadastrar pessoa.", error.response.data);
         }
     };
 
     return (
         <div style={{ marginBottom: '30px', padding: '20px', border: '1px solid #ddd' }}>
-            <h2>Cadastrar Nova Pessoa</h2>
+            <h3>{pessoaParaEditar ? 'Editar Pessoa' : 'Cadastrar Nova Pessoa'}</h3>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"

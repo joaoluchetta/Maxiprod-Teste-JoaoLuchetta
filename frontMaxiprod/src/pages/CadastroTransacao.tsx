@@ -4,10 +4,6 @@ import { getCategorias } from '../services/categoriaService';
 import { createTransacao } from '../services/transacaoService';
 import { Pessoa, Categoria, FinalidadeCategoria } from '../types';
 
-// interface Props {
-//     onSucess: () => void;
-// }
-
 export const CadastroTransacao = ({ onSucesso }: Props) => {
     const [pessoas, setPessoas] = useState<Pessoa[]>([]);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -15,7 +11,7 @@ export const CadastroTransacao = ({ onSucesso }: Props) => {
     const [pessoaId, setPessoaId] = useState('');
     const [categoriaId, setCategoriaId] = useState('');
     const [descricao, setDescricao] = useState('');
-    const [valor, setValor] = useState<number>(null);
+    const [valor, setValor] = useState<number | ''>('');
     const [tipo, setTipo] = useState<number>(1); 
 
     useEffect(() => {
@@ -37,9 +33,6 @@ export const CadastroTransacao = ({ onSucesso }: Props) => {
             await createTransacao({ pessoaId, categoriaId, descricao, valor, tipo });
             alert("Transação realizada com sucesso!");
             window.location.reload()
-            // onSucesso();
-            // setDescricao('');
-            // setValor(null);
         } catch (error: any) {
             const mensagem = error.response?.data || "Erro ao realizar transação.";
             alert(mensagem);
@@ -47,23 +40,23 @@ export const CadastroTransacao = ({ onSucesso }: Props) => {
     };
 
     return (
-        <div style={{ padding: '20px', border: '1px solid #666', marginTop: '20px' }}>
+        <div style={{ margin: '20px', padding: '20px', border: '1px solid #ddd' }}>
             <h2>Nova Transação</h2>
             <form onSubmit={handleSubmit}>
-                <select value={pessoaId} onChange={(e) => setPessoaId(e.target.value)}>
+                <select value={pessoaId} onChange={(e) => setPessoaId(e.target.value)} style={{ marginRight: '10px' }}>
                     <option value="">Selecione a Pessoa</option>
                     {pessoas.map(p => <option key={p.id} value={p.id}>{p.nome} ({p.idade} anos)</option>)}
                 </select>
 
-                <select value={categoriaId} onChange={(e) => setCategoriaId(e.target.value)}>
+                <select value={categoriaId} onChange={(e) => setCategoriaId(e.target.value)} style={{ marginRight: '10px' }}>
                     <option value="">Selecione a Categoria</option>
                     {categorias.map(c => <option key={c.id} value={c.id}>{c.descricao}</option>)}
                 </select>
 
-                <input type="text" placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} maxLength={400} />
-                <input type="number" placeholder="Valor" value={valor} onChange={(e) => setValor(Number(e.target.value))} />
+                <input type="text" placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} style={{ marginRight: '10px' }} maxLength={400} />
+                <input type="number" placeholder="Valor" value={valor} onChange={(e) => setValor(e.target.value === '' ? '' : Number(e.target.value))} style={{ marginRight: '10px' }} />
 
-                <select value={tipo} onChange={(e) => setTipo(Number(e.target.value))}>
+                <select value={tipo} onChange={(e) => setTipo(Number(e.target.value))} style={{ marginRight: '10px' }}>
                     <option value={1}>Receita</option>
                     <option value={2}>Despesa</option>
                 </select>

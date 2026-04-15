@@ -9,6 +9,7 @@ interface Props {
 
 export const ListagemPessoas = () => {
   const [pessoas, setPessoas] = useState<Pessoa[]>([]);
+  const [pessoaEmEdicao, setPessoaEmEdicao] = useState<Pessoa | null>(null);
   
   const totalGeralReceitas = pessoas.reduce((acc, p) => acc + p.totalReceitas, 0);
   const totalGeralDespesas = pessoas.reduce((acc, p) => acc + p.totalDespesas, 0);
@@ -29,13 +30,23 @@ export const ListagemPessoas = () => {
     if (window.confirm("Tem certeza que deseja excluir esta pessoa? Todas as suas transações serão apagadas.")) {
       try {
         await deletePessoa(id);
-        carregarPessoas(); 
+        window.location.reload()
         alert("Pessoa removida com sucesso!");
       } catch (error) {
         console.error("Erro ao excluir:", error);
         alert("Erro ao excluir pessoa.");
       }
     }
+  };
+
+  const handleEditar = (pessoa: Pessoa) => {
+    setPessoaEmEdicao(pessoa); 
+    window.scrollTo(0, 0);
+  };
+
+  const finalizarAcao = () => {
+    setPessoaEmEdicao(null); 
+    carregarPessoas(); 
   };
 
   useEffect(() => {
@@ -46,7 +57,10 @@ export const ListagemPessoas = () => {
     <div style={{ padding: '20px' }}>
       <h1>Controle de Gastos - Pessoas</h1>
       
-      <CadastroPessoa onSucesso={carregarPessoas} />
+      <CadastroPessoa 
+          onSucesso={carregarPessoas} 
+          pessoaParaEditar={pessoaEmEdicao}
+      />
       
       <table border={1} style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
         <thead>
@@ -68,6 +82,9 @@ export const ListagemPessoas = () => {
               <td style={{ color: 'red' }}>{p.totalDespesas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
               <td style={{ fontWeight: 'bold' }}>{p.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
               <td>
+                <button onClick={() => handleEditar(p)} style={{ marginRight: '10px' }}>
+                  Editar
+                </button>
                 <button
                     onClick={() => handleExcluir(p.id)}
                     style={{ color: 'red', cursor: 'pointer' }}
