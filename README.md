@@ -6,10 +6,10 @@
 Navegue até a pasta do servidor e execute os comandos abaixo:
 
 ```bash
-# Restaurar bibliotecas do C#
-dotnet restore
+#Criar uma nova Migration
+dotnet ef migrations add InitialCreate
 
-# Criar/Atualizar o banco de dados SQLite
+# Atualizar o banco de dados SQLite
 dotnet ef database update
 
 # Executar o projeto
