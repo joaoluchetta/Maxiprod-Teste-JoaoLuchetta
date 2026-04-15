@@ -23,8 +23,6 @@ export const Categorias = () => {
 
         try {
             await createCategoria(descricao, finalidade);
-            // setDescricao('');
-            // carregarCategorias();
             window.location.reload()
             alert("Categoria criada!");
         } catch (error) {

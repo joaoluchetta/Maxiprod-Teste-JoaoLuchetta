@@ -31,16 +31,11 @@ export const CadastroPessoa = ({ onSucesso, pessoaParaEditar }: Props) => {
         try {
             if (pessoaParaEditar) {
                 await updatePessoa(pessoaParaEditar.id, nome, Number(idade));
-                // setIdade('');
-                // onSucesso();
                 window.location.reload()
                 alert("Pessoa atualizada!");
                 return;
             }
             await createPessoa(nome, Number(idade));
-            // setNome('');
-            // setIdade('');
-            // onSucesso();
             window.location.reload()
             alert("Pessoa cadastrada com sucesso!");
         } catch (error) {
