@@ -34,7 +34,7 @@ export const Categorias = () => {
         <div style={{ padding: '20px' }}>
             <h2>Cadastro de Categorias</h2>
 
-            <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
+            <form onSubmit={handleSubmit} style={{ marginBottom: '20px', color: 'black' }}>
                 <input
                     type="text"
                     placeholder="Descrição (máx 400)"
@@ -52,7 +52,7 @@ export const Categorias = () => {
 
             <table border={1} style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
-                <tr style={{ backgroundColor: '#f2f2f2' }}>
+                <tr style={{ backgroundColor: '#eaeced', color: 'black' }}>
                     <th>Descrição</th>
                     <th>Finalidade</th>
                 </tr>
